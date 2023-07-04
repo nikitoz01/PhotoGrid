@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "kg.npml.core.data"
+    namespace = "kg.npml.core.common"
     compileSdk = 33
 
     defaultConfig {
@@ -13,7 +13,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-
     }
 
     buildTypes {
@@ -35,7 +34,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:photonetwork"))
 
     implementation(libs.koin.core)
     implementation(libs.koin.annotations)

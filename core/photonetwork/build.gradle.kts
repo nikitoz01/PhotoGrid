@@ -1,11 +1,24 @@
+import com.android.build.api.variant.BuildConfigField
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
 }
 
+androidComponents {
+    onVariants {
+        it.buildConfigFields.put(
+            "API_KEY", BuildConfigField(
+                "String", "XiIznkJSVu73Vhvcav6i3g4yJZNrmvQmvd1I3TRiJwuOG2bd67JAfYsa", ""
+            )
+        )
+    }
+}
+
+
 android {
-    namespace = "kg.npml.core.data"
+    namespace = "kg.npml.core.photonetwork"
     compileSdk = 33
 
     defaultConfig {
@@ -13,7 +26,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-
     }
 
     buildTypes {
@@ -35,10 +47,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:photonetwork"))
+
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.kotlin.serialization)
 
     implementation(libs.koin.core)
     implementation(libs.koin.annotations)
     ksp(libs.koin.ksp)
-
 }
