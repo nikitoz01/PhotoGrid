@@ -15,4 +15,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "PhotoGrid"
 include(":app")
- 
+include(":feature")
+include(":core")
+include(":core:data")
+include(":core:domain")
+include(":feature:photogrid")
