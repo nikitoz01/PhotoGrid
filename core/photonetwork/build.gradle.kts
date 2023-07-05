@@ -4,13 +4,14 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 androidComponents {
     onVariants {
         it.buildConfigFields.put(
             "API_KEY", BuildConfigField(
-                "String", "XiIznkJSVu73Vhvcav6i3g4yJZNrmvQmvd1I3TRiJwuOG2bd67JAfYsa", ""
+                "String", "\"XiIznkJSVu73Vhvcav6i3g4yJZNrmvQmvd1I3TRiJwuOG2bd67JAfYsa\"", ""
             )
         )
     }
@@ -26,6 +27,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -48,8 +53,16 @@ android {
 
 dependencies {
 
+    implementation(project(":core:common"))
+
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
+
+
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.koin.core)
     implementation(libs.koin.annotations)

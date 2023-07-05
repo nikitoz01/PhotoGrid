@@ -42,14 +42,25 @@ android {
 dependencies {
 
     implementation(project(":core:domain"))
+    implementation(project(":core:common"))
 
     implementation(libs.androidx.ktx)
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
 
+
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
+
     implementation(libs.androidx.lifecycle.viewModelCompose)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.material3)
     implementation(libs.coil.kt.compose)
+
+    implementation(libs.accompanist.swiperefresh)
+
 
     implementation(libs.koin.core)
     implementation(libs.koin.android)

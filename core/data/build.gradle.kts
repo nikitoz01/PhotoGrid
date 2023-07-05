@@ -36,6 +36,10 @@ android {
 
 dependencies {
     implementation(project(":core:photonetwork"))
+    implementation(project(":core:common"))
+
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
 
     implementation(libs.koin.core)
     implementation(libs.koin.annotations)

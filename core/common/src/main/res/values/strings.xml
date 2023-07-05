@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="try_again">There was an error loading data, please try again</string>
+</resources>

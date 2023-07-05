@@ -35,7 +35,14 @@ android {
 
 dependencies {
     implementation(project(":core:data"))
+    implementation(project(":core:common"))
+    implementation(project(":core:photonetwork"))
 
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
+
+    
     implementation(libs.koin.core)
     implementation(libs.koin.annotations)
     ksp(libs.koin.ksp)
