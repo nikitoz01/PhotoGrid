@@ -1,5 +1,8 @@
 package kg.npml.core.common
 
+/**
+ * Фейковые категории фоток
+ */
 object FakePhotoCategories {
     val photos = listOf(
         "Car",

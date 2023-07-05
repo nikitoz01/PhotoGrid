@@ -4,6 +4,9 @@ import kg.npml.core.photonetwork.model.PhotoResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+/**
+ * Сетевой слой
+ */
 interface RetrofitPhotoApi {
     @GET("search/")
     suspend fun getPhotoByCategory(

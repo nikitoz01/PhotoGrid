@@ -6,6 +6,9 @@ import kg.npml.core.common.model.Photo
 import kg.npml.core.data.mapper.toEntryPhoto
 import kg.npml.core.photonetwork.model.PhotoResponseDto
 
+/**
+ * PagingSource из paging3 для фотографий
+ */
 class PhotoPagingSource(
     private val category: String,
     private val loader: suspend (String, Int) -> PhotoResponseDto

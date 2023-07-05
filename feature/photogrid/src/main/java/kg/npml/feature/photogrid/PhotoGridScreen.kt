@@ -34,6 +34,10 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kg.npml.core.common.model.Photo
 import org.koin.androidx.compose.koinViewModel
 
+
+/**
+ * Экран-плитка фотографий
+ */
 @Composable
 fun PhotoGridScreen(
     viewModel: PhotoGridViewModel = koinViewModel(),

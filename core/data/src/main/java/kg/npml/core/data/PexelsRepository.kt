@@ -6,6 +6,9 @@ import kg.npml.core.data.pagind.PhotoPagingSource
 import kg.npml.core.photonetwork.PhotoDataSource
 import org.koin.core.annotation.Single
 
+/**
+ * Имплементация репозитория фотографий
+ */
 @Single
 class PexelsRepository(private val photoDataSource: PhotoDataSource) : PhotoRepository {
     override fun getPhotoByCategory(category: String) =

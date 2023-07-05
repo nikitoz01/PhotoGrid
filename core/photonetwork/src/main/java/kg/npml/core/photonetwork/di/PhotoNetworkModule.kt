@@ -18,6 +18,10 @@ import retrofit2.Retrofit
 @Module
 @ComponentScan("kg.npml.core.photonetwork")
 class PhotoNetworkModule{
+
+    /**
+     * Сетевой клиент
+     */
     @Single
     fun retrofitPhotoApi() = Retrofit
         .Builder()
