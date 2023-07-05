@@ -22,7 +22,11 @@ class PhotoGridViewModel(
 ) : ViewModel() {
 
     //Стейт для рефреша по свайпу
-    private val _photoUiState = MutableStateFlow(PhotoUiState(false))
+    private val _photoUiState = MutableStateFlow(PhotoUiState(
+        isRefreshing = false,
+        isDialogShow = false,
+        dialogPhotoUrl = ""
+    ))
     val photoUiState = _photoUiState.asStateFlow()
 
     //Текущая фейковая категория, меняется при каждом свайпе
@@ -43,8 +47,24 @@ class PhotoGridViewModel(
         }
     }
 
+    fun dialogShow(photoUrl: String) {
+        viewModelScope.launch {
+            _photoUiState.emit(_photoUiState.value.copy(isDialogShow = true, dialogPhotoUrl = photoUrl))
+        }
+    }
+
+    fun dialogDismiss() {
+        viewModelScope.launch {
+            _photoUiState.emit(_photoUiState.value.copy(isDialogShow = false, dialogPhotoUrl = ""))
+        }
+    }
+
 }
 
 //Стейт экрана
-data class PhotoUiState(val isRefreshing: Boolean)
+data class PhotoUiState(
+    val isRefreshing: Boolean,
+    val isDialogShow: Boolean,
+    val dialogPhotoUrl: String
+)
 

@@ -2,6 +2,7 @@ package kg.npml.feature.photogrid
 
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -47,27 +49,58 @@ fun PhotoGridScreen(
 
     val pagingPhotos = viewModel.getPagingPhoto().collectAsLazyPagingItems()
 
-    PhotoGrid(
-        photoUiState,
-        viewModel::refresh,
-        pagingPhotos,
-    )
+    if (photoUiState.isDialogShow) {
+        PhotoDialog(
+            photoUiState.dialogPhotoUrl,
+            viewModel::dialogDismiss
+        )
+    } else {
+        PhotoGrid(
+            photoUiState.isRefreshing,
+            viewModel::refresh,
+            viewModel::dialogShow,
+            pagingPhotos
+        )
+    }
 }
+
+@Composable
+fun PhotoDialog(
+    photoUrl: String,
+    dialogDismiss: () -> Unit,
+) {
+    Dialog(onDismissRequest = { dialogDismiss() }) {
+        SubcomposeAsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(photoUrl)
+                .crossfade(true)
+                .build(),
+            //contentScale = ContentScale.Crop,
+            contentDescription = null,
+            loading = {
+                LoadingPhotoPlaceholder()
+            },
+            modifier = Modifier
+        )
+    }
+}
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PhotoGrid(
-    photoUiState: PhotoUiState,
+    isRefreshing: Boolean,
     refresh: () -> Unit,
+    showDialog: (String) -> Unit,
     pagingPhotos: LazyPagingItems<Photo>,
     modifier: Modifier = Modifier
 ) {
     SwipeRefresh(
-        state = rememberSwipeRefreshState(photoUiState.isRefreshing),
+        state = rememberSwipeRefreshState(isRefreshing),
         onRefresh = {
             refresh()
             pagingPhotos.refresh()
-                    },
+        },
     ) {
         Column(
             modifier = Modifier.padding(
@@ -80,20 +113,26 @@ fun PhotoGrid(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 items(pagingPhotos.itemCount) { index ->
-                    SubcomposeAsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(pagingPhotos[index]?.source?.medium)
-                            .crossfade(true)
-                            .build(),
-                        contentScale = ContentScale.Crop,
-                        contentDescription = null,
-                        loading = {
-                            LoadingPhotoPlaceholder()
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                    )
+                    Box(
+                        modifier = Modifier.clickable {
+                            showDialog(pagingPhotos[index]?.source!!.original)
+                        }
+                    ) {
+                        SubcomposeAsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(pagingPhotos[index]?.source?.medium)
+                                .crossfade(true)
+                                .build(),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = null,
+                            loading = {
+                                LoadingPhotoPlaceholder()
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                        )
+                    }
                 }
             }
             PagingStateIndicator(pagingPhotos)
@@ -105,7 +144,7 @@ fun PhotoGrid(
 fun PagingStateIndicator(
     pagingPhotos: LazyPagingItems<Photo>,
     modifier: Modifier = Modifier
-){
+) {
     when (val state = pagingPhotos.loadState.refresh) {
         is LoadState.Error -> {
             Toast
@@ -149,7 +188,7 @@ fun PagingStateIndicator(
 }
 
 @Composable
-fun LoadingIndicator(modifier: Modifier = Modifier){
+fun LoadingIndicator(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center,
@@ -159,10 +198,11 @@ fun LoadingIndicator(modifier: Modifier = Modifier){
 }
 
 @Composable
-fun LoadingPhotoPlaceholder(modifier: Modifier = Modifier){
-    Box (
+fun LoadingPhotoPlaceholder(modifier: Modifier = Modifier) {
+    Box(
         modifier = Modifier.defaultMinSize(minHeight = 256.dp),
-        contentAlignment = Alignment.Center) {
+        contentAlignment = Alignment.Center
+    ) {
         CircularProgressIndicator(
             color = Color.Black,
             modifier = Modifier
