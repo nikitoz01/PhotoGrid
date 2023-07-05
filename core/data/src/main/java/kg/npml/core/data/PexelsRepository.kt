@@ -2,7 +2,7 @@ package kg.npml.core.data
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import kg.npml.core.data.pagind.PhotoPagingSource
+import kg.npml.core.data.paging.PhotoPagingSource
 import kg.npml.core.photonetwork.PhotoDataSource
 import org.koin.core.annotation.Single
 

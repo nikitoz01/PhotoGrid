@@ -1,4 +1,4 @@
-package kg.npml.core.data.pagind
+package kg.npml.core.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
